@@ -1,0 +1,4 @@
+telepot
+bs4
+pandas
+lxml
