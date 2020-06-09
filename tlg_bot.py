@@ -111,10 +111,11 @@ kijiji_pattern = {'path':[['div',{'attrs':{'id':'mainPageContent'}}],
           'content_path':['div',{'attrs':{'class':'search-item regular-ad'}}],
            'message_shape':{'title' :       lambda x : '**'+re.sub('\s+',' ',x.find('a',class_='title').text)+'**',
                                           'price' :       lambda x : re.sub('\s','',x.find('div',class_='price').text),
+                                          'image' :       lambda x : x.find('img')['data-src'],
                                           'distance' :    lambda x : re.sub('\s','',x.find('div',class_='distance').text),
                                           'url' :         lambda x :'kijiji.ca'+x.find('a',class_='title')['href'],
                                           'description' : lambda x : '_'+re.sub('\s+',' ',x.find('div',class_='description').text)+'_',
-                                          'image' :       lambda x : x.find('img')['data-src']}
+                                          }
           }
 ########################################################################################################
     
