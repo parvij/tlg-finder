@@ -72,6 +72,8 @@ class person_telegram:
     def __init__(self,tlgid):
         self.tlgid = tlgid
         self.load_sent()
+        self.bot.sendMessage(self.tlgid,'New version deployed')
+        
         
     def load_sent(self):
         global sent_log
