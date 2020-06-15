@@ -121,19 +121,19 @@ kijiji_pattern = {'path':[['div',{'attrs':{'id':'mainPageContent'}}],
           }
 ########################################################################################################
     
-parviz_finder_kijiji_mountain_M = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/medium/c647l1700185a92?radius=10.0&ad=offering&price=50__300&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+parviz_finder_kijiji_mountain_M = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/medium/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
                                      additional_filter='',
                                     **kijiji_pattern)
 
-parviz_finder_kijiji_mountain_S = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/small/c647l1700185a92?radius=10.0&ad=offering&price=50__300&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+parviz_finder_kijiji_mountain_S = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/small/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
                                      additional_filter='',
                                     **kijiji_pattern)
 
-parviz_finder_kijiji_hybrid_M = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/medium/c15096001l1700185a92?radius=10.0&ad=offering&price=50__300&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+parviz_finder_kijiji_hybrid_M = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/medium/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
                                      additional_filter='',
                                     **kijiji_pattern)
 
-parviz_finder_kijiji_hybrid_S = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/small/c15096001l1700185a92?radius=10.0&ad=offering&price=50__300&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+parviz_finder_kijiji_hybrid_S = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/small/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
                                      additional_filter='',
                                     **kijiji_pattern)
 
