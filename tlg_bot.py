@@ -70,9 +70,6 @@ class extractor:
 class person_telegram:
     import telepot
     bot = telepot.Bot('218094652:AAFbG7-_JTViC-wnZZ5VZC-uwvlNJ4EGx2w')
-    #bot.getUpdates(offset=100000001)
-    #bot.sendMessage(91686406, '<b>Good morning!</b>',parse_mode='HTML')
-
 
     def __init__(self,tlgid):
         self.tlgid = tlgid
@@ -124,41 +121,12 @@ patterns = {'www.kijiji.ca': {'path':[['div',{'attrs':{'id':'mainPageContent'}}]
                                           }
           }
     }
-########################################################################################################
-    
-# parviz_finder_kijiji_mountain_M = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/medium/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-#                                      additional_filter='',
-#                                     **kijiji_pattern)
-
-# parviz_finder_kijiji_mountain_S = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/small/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-#                                      additional_filter='',
-#                                     **kijiji_pattern)
-
-# parviz_finder_kijiji_hybrid_M = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/medium/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-#                                      additional_filter='',
-#                                     **kijiji_pattern)
-
-# parviz_finder_kijiji_hybrid_S = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/small/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-#                                      additional_filter='',
-#                                     **kijiji_pattern)
-
-# parviz_telegram = person_telegram(tlgid = 91686406)
-# #########################################################################################################
-
-# tasks=[{'source':parviz_finder_kijiji_mountain_M,
-#         'receiver':parviz_telegram},
-#        {'source':parviz_finder_kijiji_hybrid_M,
-#         'receiver':parviz_telegram},
-# {'source':parviz_finder_kijiji_mountain_S,
-#         'receiver':parviz_telegram},
-#        {'source':parviz_finder_kijiji_hybrid_S,
-#         'receiver':parviz_telegram}
-#        ]
-
-
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
+
+
+
 if __name__ == "__main__":
     
     s3_resource = boto3.resource('s3',aws_access_key_id='AKIATDZGFCI2ANVLLI5I',aws_secret_access_key='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')
@@ -178,6 +146,11 @@ if __name__ == "__main__":
                     row['receiver'].sendMessage(post,url)
                 
                 row['receiver'].update_saved_sent()
+                
+                
+                
+                
+                row['receiver'].sendMessage(str(row['receiver'].bot.getUpdates()),'')
         
         
         except Exception  as e:
