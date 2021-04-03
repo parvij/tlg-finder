@@ -128,16 +128,15 @@ patterns = {'www.kijiji.ca': {'path':[['div',{'attrs':{'id':'mainPageContent'}}]
 
 
 if __name__ == "__main__":
+    try:
+        s3_resource = boto3.resource('s3',aws_access_key_id='AKIATDZGFCI2ANVLLI5I',aws_secret_access_key='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')
+        s3_object = s3_resource.Object(bucket_name='tlgfinder', key='requests.csv')
+        s3_data = StringIO(s3_object.get()['Body'].read().decode('utf-8'))
+        requests = pd.read_csv(s3_data)
+        requests['receiver'] = requests.tlg_id.apply(lambda x: person_telegram(tlgid = x))
+        requests['source'] = requests.url.apply(lambda x: extractor(url = x, additional_filter='', **patterns[urlparse(x).netloc]))
     
-    s3_resource = boto3.resource('s3',aws_access_key_id='AKIATDZGFCI2ANVLLI5I',aws_secret_access_key='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')
-    s3_object = s3_resource.Object(bucket_name='tlgfinder', key='requests.csv')
-    s3_data = StringIO(s3_object.get()['Body'].read().decode('utf-8'))
-    requests = pd.read_csv(s3_data)
-    requests['receiver'] = requests.tlg_id.apply(lambda x: person_telegram(tlgid = x))
-    requests['source'] = requests.url.apply(lambda x: extractor(url = x, additional_filter='', **patterns[urlparse(x).netloc]))
-
-    while 1:
-        try:
+        while 1:
             for idx,row in requests.iterrows():
                 row['source'].extract_url()
                 row['source'].extract_path()
@@ -151,11 +150,9 @@ if __name__ == "__main__":
                 
                 
                 row['receiver'].sendMessage(str(row['receiver'].bot.getUpdates()),'')
+        time.sleep(1500)       
         
-        
-        except Exception  as e:
-            import telepot
-            bot = telepot.Bot('218094652:AAFbG7-_JTViC-wnZZ5VZC-uwvlNJ4EGx2w')
-            bot.sendMessage(91686406,'Error:'+str(e))
-    
-        time.sleep(1500)
+    except Exception  as e:
+        import telepot
+        bot = telepot.Bot('218094652:AAFbG7-_JTViC-wnZZ5VZC-uwvlNJ4EGx2w')
+        bot.sendMessage(91686406,'Error:'+str(e))
