@@ -81,7 +81,7 @@ class person_telegram:
     def load_sent(self):
         global sent_log
         try:
-            sent_log = pd.read_csv('sent_log.csv')
+            #########################################sent_log = pd.read_csv('sent_log.csv')
         except:
             pass
     
