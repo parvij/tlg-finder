@@ -154,7 +154,8 @@ if __name__ == "__main__":
         
         
         except Exception  as e:
-            raise e
-            print('err_r',end='')
+            import telepot
+            bot = telepot.Bot('218094652:AAFbG7-_JTViC-wnZZ5VZC-uwvlNJ4EGx2w')
+            bot.sendMessage(91686406,'Error:'+str(e))
     
         time.sleep(1500)
