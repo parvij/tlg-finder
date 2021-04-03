@@ -17,6 +17,16 @@ import os
 
 from urllib.parse import urlparse
 
+import telepot
+bot = telepot.Bot('218094652:AAFbG7-_JTViC-wnZZ5VZC-uwvlNJ4EGx2w')
+bot.sendMessage(91686406,'testttttttttttt')
+
+
+
+
+
+
+
 sent_log = pd.DataFrame({'telegram_id':[],'url':[],'msg':[]})
 
 ###########################################################################################################
@@ -82,6 +92,7 @@ class person_telegram:
         global sent_log
         try:
             #########################################sent_log = pd.read_csv('sent_log.csv')
+            1==1
         except:
             pass
     
