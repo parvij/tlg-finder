@@ -11,6 +11,11 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 
+from io import StringIO
+import boto3
+
+from urllib.parse import urlparse
+
 sent_log = pd.DataFrame({'telegram_id':[],'url':[],'msg':[]})
 
 ###########################################################################################################
@@ -106,8 +111,7 @@ class person_telegram:
         global sent_log
         sent_log.to_csv('sent_log.csv', index=False)
 ########################################################################################################
-
-kijiji_pattern = {'path':[['div',{'attrs':{'id':'mainPageContent'}}],
+patterns = {'www.kijiji.ca': {'path':[['div',{'attrs':{'id':'mainPageContent'}}],
                                   ['div',{'attrs':{'class':'layout-3'}}],
                                   ['div',{'attrs':{'class':'col-2'}}]],
           'content_path':['div',{'attrs':{'class':'search-item regular-ad'}}],
@@ -119,56 +123,65 @@ kijiji_pattern = {'path':[['div',{'attrs':{'id':'mainPageContent'}}],
                                           'description' : lambda x : '_'+re.sub('\s+',' ',x.find('div',class_='description').text)+'_',
                                           }
           }
+    }
 ########################################################################################################
     
-parviz_finder_kijiji_mountain_M = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/medium/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-                                     additional_filter='',
-                                    **kijiji_pattern)
+# parviz_finder_kijiji_mountain_M = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/medium/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+#                                      additional_filter='',
+#                                     **kijiji_pattern)
 
-parviz_finder_kijiji_mountain_S = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/small/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-                                     additional_filter='',
-                                    **kijiji_pattern)
+# parviz_finder_kijiji_mountain_S = extractor( url = 'https://www.kijiji.ca/b-mountain-bike/ottawa/small/c647l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+#                                      additional_filter='',
+#                                     **kijiji_pattern)
 
-parviz_finder_kijiji_hybrid_M = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/medium/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-                                     additional_filter='',
-                                    **kijiji_pattern)
+# parviz_finder_kijiji_hybrid_M = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/medium/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+#                                      additional_filter='',
+#                                     **kijiji_pattern)
 
-parviz_finder_kijiji_hybrid_S = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/small/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
-                                     additional_filter='',
-                                    **kijiji_pattern)
+# parviz_finder_kijiji_hybrid_S = extractor(url = 'https://www.kijiji.ca/b-cruiser-commuter-hybrid/ottawa/small/c15096001l1700185a92?radius=10.0&ad=offering&price=150__500&minNumberOfImages=1&address=207+Bell+Street+North%2C+Ottawa%2C+ON&ll=45.406056,-75.705357',
+#                                      additional_filter='',
+#                                     **kijiji_pattern)
 
-parviz_telegram = person_telegram(tlgid = 91686406)
+# parviz_telegram = person_telegram(tlgid = 91686406)
+# #########################################################################################################
+
+# tasks=[{'source':parviz_finder_kijiji_mountain_M,
+#         'receiver':parviz_telegram},
+#        {'source':parviz_finder_kijiji_hybrid_M,
+#         'receiver':parviz_telegram},
+# {'source':parviz_finder_kijiji_mountain_S,
+#         'receiver':parviz_telegram},
+#        {'source':parviz_finder_kijiji_hybrid_S,
+#         'receiver':parviz_telegram}
+#        ]
+
+
 #########################################################################################################
-
-tasks=[{'source':parviz_finder_kijiji_mountain_M,
-        'receiver':parviz_telegram},
-       {'source':parviz_finder_kijiji_hybrid_M,
-        'receiver':parviz_telegram},
-{'source':parviz_finder_kijiji_mountain_S,
-        'receiver':parviz_telegram},
-       {'source':parviz_finder_kijiji_hybrid_S,
-        'receiver':parviz_telegram}
-       ]
-
-
 #########################################################################################################
 #########################################################################################################
-#########################################################################################################
+if __name__ == "__main__":
     
-while 1:
-    try:
-        for t in tasks:
-            t['source'].extract_url()
-            t['source'].extract_path()
-            t['source'].get_list()
-            for post,url in t['source'].get_list_of_msg_url():
-                t['receiver'].sendMessage(post,url)
-            
-            t['receiver'].update_saved_sent()
-    
-    
-    except Exception  as e:
-        raise e
-        print('err_r',end='')
+    s3_resource = boto3.resource('s3',aws_access_key_id='AKIATDZGFCI2ANVLLI5I',aws_secret_access_key='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')
+    s3_object = s3_resource.Object(bucket_name='tlgfinder', key='requests.csv')
+    s3_data = StringIO(s3_object.get()['Body'].read().decode('utf-8'))
+    requests = pd.read_csv(s3_data)
+    requests['receiver'] = requests.tlg_id.apply(lambda x: person_telegram(tlgid = x))
+    requests['source'] = requests.url.apply(lambda x: extractor(url = x, additional_filter='', **patterns[urlparse(x).netloc]))
 
-    time.sleep(1500)
+    while 1:
+        try:
+            for idx,row in requests.iterrows():
+                row['source'].extract_url()
+                row['source'].extract_path()
+                row['source'].get_list()
+                for post,url in row['source'].get_list_of_msg_url():
+                    row['receiver'].sendMessage(post,url)
+                
+                row['receiver'].update_saved_sent()
+        
+        
+        except Exception  as e:
+            raise e
+            print('err_r',end='')
+    
+        time.sleep(1500)
