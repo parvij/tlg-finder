@@ -129,7 +129,7 @@ patterns = {'www.kijiji.ca': {'path':[['div',{'attrs':{'id':'mainPageContent'}}]
 
 if __name__ == "__main__":
     try:
-        s3_resource = boto3.resource('s3',aws_access_key_id='AKIATDZGFCI2ANVLLI5I',aws_secret_access_key='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')
+        s3_resource = boto3.resource('s3',aws_access_key_id=os.environ['aws_access_key_id'],aws_secret_access_key=os.environ['aws_secret_access_key'])
         s3_object = s3_resource.Object(bucket_name='tlgfinder', key='requests.csv')
         s3_data = StringIO(s3_object.get()['Body'].read().decode('utf-8'))
         requests = pd.read_csv(s3_data)
